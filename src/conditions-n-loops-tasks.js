@@ -414,8 +414,16 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const newArr = arr;
+  for (let i = 0; i < newArr.length; i += 1) {
+    for (let s = 0; s < newArr.length; s += 1) {
+      if (newArr[s] > newArr[s + 1]) {
+        [newArr[s], newArr[s + 1]] = [newArr[s + 1], newArr[s]];
+      }
+    }
+  }
+  return newArr;
 }
 
 /**
@@ -487,8 +495,58 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const strNum = `${number}`;
+  const arr = [];
+
+  for (let i = 0; i < strNum.length; i += 1) {
+    arr[i] = Number(strNum[i]);
+  }
+
+  let iterArr = arr.length - 1;
+  let sliceIndex = 0;
+
+  for (let i = arr.length - 1; i >= 0; i -= 1) {
+    let check = 0;
+    for (let s = iterArr; s >= 0; s -= 1) {
+      if (arr[i] > arr[s]) {
+        sliceIndex = s;
+        [arr[i], arr[s]] = [arr[s], arr[i]];
+        check += 1;
+        break;
+      }
+    }
+    iterArr -= 1;
+    if (check === 1) {
+      break;
+    }
+  }
+  const sliceArr1 = [];
+  const sliceArr2 = [];
+  let sliceInd = 0;
+  for (let i = 0; i < sliceIndex + 1; i += 1) {
+    sliceArr1[i] = arr[i];
+  }
+  for (let i = sliceIndex + 1; i < arr.length; i += 1) {
+    sliceArr2[sliceInd] = arr[i];
+    sliceInd += 1;
+  }
+
+  for (let i = 0; i < sliceArr2.length; i += 1) {
+    for (let s = 0; s < sliceArr2.length - 1; s += 1) {
+      if (sliceArr2[s] > sliceArr2[s + 1]) {
+        [sliceArr2[s], sliceArr2[s + 1]] = [sliceArr2[s + 1], sliceArr2[s]];
+      }
+    }
+  }
+
+  const finArr = [...sliceArr1, ...sliceArr2];
+  let str = '';
+  for (let i = 0; i < finArr.length; i += 1) {
+    str += finArr[i];
+  }
+
+  return Number(str);
 }
 
 module.exports = {
