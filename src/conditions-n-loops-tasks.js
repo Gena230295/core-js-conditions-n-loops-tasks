@@ -496,57 +496,49 @@ function shuffleChar(str, iterations) {
  * @returns {number} The nearest larger number, or original number if none exists.
  */
 function getNearestBigger(number) {
-  const strNum = `${number}`;
+  const str = `${number}`;
   const arr = [];
-
-  for (let i = 0; i < strNum.length; i += 1) {
-    arr[i] = Number(strNum[i]);
+  for (let i = 0; i < str.length; i += 1) {
+    arr[i] = Number(str[i]);
   }
-
-  let iterArr = arr.length - 1;
-  let sliceIndex = 0;
-
+  let ind;
   for (let i = arr.length - 1; i >= 0; i -= 1) {
-    let check = 0;
-    for (let s = iterArr; s >= 0; s -= 1) {
-      if (arr[i] > arr[s]) {
-        sliceIndex = s;
-        [arr[i], arr[s]] = [arr[s], arr[i]];
-        check += 1;
-        break;
-      }
-    }
-    iterArr -= 1;
-    if (check === 1) {
+    if (arr[i] > arr[i - 1]) {
+      ind = i - 1;
       break;
     }
   }
-  const sliceArr1 = [];
-  const sliceArr2 = [];
-  let sliceInd = 0;
-  for (let i = 0; i < sliceIndex + 1; i += 1) {
-    sliceArr1[i] = arr[i];
+  const arr1 = [];
+  const arr2 = [];
+  for (let i = 0; i <= ind; i += 1) {
+    arr1[i] = arr[i];
   }
-  for (let i = sliceIndex + 1; i < arr.length; i += 1) {
-    sliceArr2[sliceInd] = arr[i];
-    sliceInd += 1;
+  for (let i = 0; i < arr.length - ind - 1; i += 1) {
+    arr2[i] = arr[i + ind + 1];
   }
-
-  for (let i = 0; i < sliceArr2.length; i += 1) {
-    for (let s = 0; s < sliceArr2.length - 1; s += 1) {
-      if (sliceArr2[s] > sliceArr2[s + 1]) {
-        [sliceArr2[s], sliceArr2[s + 1]] = [sliceArr2[s + 1], sliceArr2[s]];
+  for (let i = 0; i < arr2.length; i += 1) {
+    for (let s = 0; s < arr2.length; s += 1) {
+      if (arr2[s] > arr2[s + 1]) {
+        [arr2[s], arr2[s + 1]] = [arr2[s + 1], arr2[s]];
       }
     }
   }
-
-  const finArr = [...sliceArr1, ...sliceArr2];
-  let str = '';
-  for (let i = 0; i < finArr.length; i += 1) {
-    str += finArr[i];
+  for (let i = 0; i < arr2.length; i += 1) {
+    if (arr1[arr1.length - 1] < arr2[i]) {
+      [arr1[arr1.length - 1], arr2[i]] = [arr2[i], arr1[arr1.length - 1]];
+      break;
+    }
   }
-
-  return Number(str);
+  const finArr = [...arr1, ...arr2];
+  let newStr = '';
+  for (let i = 0; i < finArr.length; i += 1) {
+    newStr += finArr[i];
+  }
+  const finNum = Number(newStr);
+  if (finNum === 0) {
+    return number;
+  }
+  return finNum;
 }
 
 module.exports = {
