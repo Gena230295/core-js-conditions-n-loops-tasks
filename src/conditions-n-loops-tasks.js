@@ -415,15 +415,41 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  const newArr = arr;
-  for (let i = 0; i < newArr.length; i += 1) {
-    for (let s = 0; s < newArr.length; s += 1) {
-      if (newArr[s] > newArr[s + 1]) {
-        [newArr[s], newArr[s + 1]] = [newArr[s + 1], newArr[s]];
-      }
+  const finArr = arr;
+  if (arr.length < 2) {
+    return arr;
+  }
+  const firstArr = [];
+  const mediumArr = [];
+  const secondArr = [];
+  const randomEl = Math.floor(Math.random() * arr.length);
+  const num = arr[randomEl];
+  let firstNum = 0;
+  let mediumNum = 0;
+  let secondNum = 0;
+  for (let i = 0; i < arr.length; i += 1) {
+    if (arr[i] < num) {
+      firstArr[firstNum] = arr[i];
+      firstNum += 1;
+    }
+    if (arr[i] === num) {
+      mediumArr[mediumNum] = arr[i];
+      mediumNum += 1;
+    }
+    if (arr[i] > num) {
+      secondArr[secondNum] = arr[i];
+      secondNum += 1;
     }
   }
-  return newArr;
+  const newArr = [
+    ...sortByAsc(firstArr),
+    ...mediumArr,
+    ...sortByAsc(secondArr),
+  ];
+  for (let i = 0; i < newArr.length; i += 1) {
+    finArr[i] = newArr[i];
+  }
+  return finArr;
 }
 
 /**
